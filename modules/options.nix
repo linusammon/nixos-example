@@ -1,23 +1,36 @@
-{ lib, ... }: {
+{ lib, ... }:
+let
+  inherit (lib)
+    mkOption
+    types
+    ;
+  inherit (types)
+    attrsOf
+    functionTo
+    unspecified
+    package
+    ;
+in
+{
   options = {
-    modules = lib.mkOption {
-      type = lib.types.attrsOf lib.types.unspecified;
+    modules = mkOption {
+      type = attrsOf unspecified;
       default = { };
     };
-    nixosConfigurations = lib.mkOption {
-      type = lib.types.attrsOf lib.types.unspecified;
+    nixosConfigurations = mkOption {
+      type = attrsOf unspecified;
       default = { };
     };
-    devShells = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.functionTo lib.types.unspecified);
+    devShells = mkOption {
+      type = attrsOf (functionTo unspecified);
       default = { };
     };
-    packages = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.functionTo lib.types.unspecified);
+    packages = mkOption {
+      type = attrsOf (functionTo package);
       default = { };
     };
-    formatter = lib.mkOption {
-      type = lib.types.functionTo lib.types.package;
+    formatter = mkOption {
+      type = functionTo package;
     };
   };
 }
