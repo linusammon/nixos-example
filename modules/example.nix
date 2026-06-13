@@ -1,10 +1,10 @@
 { config, lib, ... }:
 {
-  modules.nixos.common = {
+  modules.nixos.common = _: {
     system.stateVersion = "26.05";
   };
 
-  modules.nixos.programs.firefox = {
+  modules.nixos.programs.firefox = _: {
     programs.firefox.enable = true;
   };
 
@@ -12,7 +12,7 @@
     environment.systemPackages = [ pkgs.gimp ];
   };
 
-  modules.nixos.my-laptop = {
+  modules.nixos.my-laptop = _: {
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
     fileSystems."/" = {
@@ -35,13 +35,13 @@
     ];
   };
 
-  devShells.default =
-    pkgs:
-    pkgs.mkShell {
-      packages = [ pkgs.tack ];
-    };
+  # devShells.default =
+  #   pkgs:
+  #   pkgs.mkShell {
+  #     packages = [ pkgs.tack ];
+  #   };
 
-  packages.default = pkgs: pkgs.hello;
+  # packages.default = pkgs: pkgs.hello;
 
-  formatter = pkgs: pkgs.nixfmt-tree;
+  #formatter = pkgs: pkgs.nixfmt-tree;
 }
