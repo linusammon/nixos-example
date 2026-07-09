@@ -13,14 +13,7 @@ let
     "aarch64-linux"
   ];
 
-  perSystem =
-    f:
-    builtins.listToAttrs (
-      map (system: {
-        name = system;
-        value = f inputs.nixpkgs.legacyPackages.${system};
-      }) systems
-    );
+  perSystem = f: lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
 
   importTree = path: toList (fileFilter (file: file.hasExt "nix" && !(hasPrefix "_" file.name)) path);
 
@@ -30,8 +23,8 @@ let
       specialArgs = { inherit inputs lib; };
     }).config;
 in
-config
-// {
+{
+  inherit (config) nixosConfigurations;
   devShells = perSystem (pkgs: mapAttrs (_: f: f pkgs) config.devShells);
   packages = perSystem (pkgs: mapAttrs (_: f: f pkgs) config.packages);
   formatter = perSystem (pkgs: config.formatter pkgs);
